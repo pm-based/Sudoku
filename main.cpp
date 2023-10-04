@@ -88,7 +88,12 @@ bool basic_search (const unsigned v[], unsigned n_elements){
     return true;
 }
 
-
+bool check_rows (const unsigned sudoku[][SIZE]){
+    for(size_t i = 0; i < SIZE ; ++i){
+        if (!basic_search(sudoku[i],SIZE)) false;
+    }
+    return true;
+}
 
 
 int check_sudoku(const unsigned sudoku[][SIZE])
