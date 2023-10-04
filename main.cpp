@@ -63,13 +63,14 @@ int main()
     return 0;
 }
 
-int search_key (const unsigned v[], unsigned n_elements, unsigned key)
+// Modified with bool instead int, since the output can be only 0 or 1.
+bool search_key (const unsigned v[], unsigned n_elements, unsigned key)
 {
-    unsigned key_found = 0;
+    bool key_found = false;
 
     for (size_t i=0; i<n_elements; ++i)
         if (v[i] == key)
-            key_found = 1;
+            key_found = true;
 
     return key_found;
 }
