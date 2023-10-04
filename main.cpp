@@ -11,7 +11,7 @@ using std::endl;
 const size_t SIZE = 9;
 
 // returns true if all numbers from 1 to 9 are contained in v, false otherwise
-bool basic_search (const unsigned v[], unsigned n_elements);
+bool basic_search (const unsigned * v[], unsigned n_elements);
 
 
 // they return 1 if all the rows, columns and subregions (respectively) of the Sudoku matrix comply with the rules, 0 otherwise
@@ -76,28 +76,54 @@ bool search_key (const unsigned v[], unsigned n_elements, unsigned key)
 }
 
 
-bool basic_search (const unsigned v[], unsigned n_elements){
+bool basic_search (const unsigned * v[], unsigned n_elements){
+
+    // Print for debug purposes
+//    cout << "search in array:" << endl;
+//    for(size_t i = 0; i < n_elements; ++i){
+//        cout << *v[i]<< "\t";
+//    }
+//    cout << endl;
+
     for(unsigned n = 1; n <= n_elements; ++n){ // search for the number n in the array v
         bool nIsFound = false;
 
         for(size_t i = 0 ; i < n_elements && !nIsFound; ++i){
-            if (v[i] == n) nIsFound = true;
+            if (*v[i] == n) nIsFound = true;
         }
-        if (!nIsFound) return false; // If the number n has not been found in the array
+        if (!nIsFound) {
+            return false; // If the number n has not been found in the array
+        }
     }
     return true;
 }
 
 bool check_rows (const unsigned sudoku[][SIZE]){
-    for(size_t i = 0; i < SIZE ; ++i){
-        if (!basic_search(sudoku[i],SIZE)) false;
+    for(size_t rowIndex = 0; rowIndex < SIZE ; ++rowIndex){
+        const unsigned * row[SIZE] = {};
+        for(size_t colIndex = 0; colIndex < SIZE; ++colIndex){
+            row[colIndex] = &sudoku[rowIndex][colIndex];
+        };
+        if (!basic_search(row,SIZE)) return false;
     }
     return true;
 }
 
 bool check_cols (const unsigned sudoku[][SIZE]){
-    for(size_t i = 0; i < SIZE ; i += SIZE){
-        if (!basic_search(sudoku[i],SIZE)) false;
+    for(size_t colIndex = 0; colIndex < SIZE; ++colIndex){      // for every columns
+        const unsigned * col[SIZE] = {};                             // Arrey pointers.
+        for(size_t rowIndex = 0; rowIndex < SIZE; ++rowIndex){
+            col[rowIndex] = &sudoku[rowIndex][colIndex];
+        }
+
+        // Print for debug purposes
+//        cout << "search in column: " << endl;
+//        for(auto pToElem : col){
+//            cout << *pToElem << "\t";
+//        }
+//        cout << endl;
+
+        if (!basic_search(col,SIZE)) return false;
     }
     return true;
 }
