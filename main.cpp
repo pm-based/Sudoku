@@ -95,6 +95,13 @@ bool check_rows (const unsigned sudoku[][SIZE]){
     return true;
 }
 
+bool check_cols (const unsigned sudoku[][SIZE]){
+    for(size_t i = 0; i < SIZE ; i += SIZE){
+        if (!basic_search(sudoku[i],SIZE)) false;
+    }
+    return true;
+}
+
 
 int check_sudoku(const unsigned sudoku[][SIZE])
 {
