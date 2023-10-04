@@ -10,8 +10,7 @@ using std::endl;
 
 const size_t SIZE = 9;
 
-// returns 1 if all numbers from 1 to 9 are contained in v, 0 otherwise
-// TODO: implement
+// returns true if all numbers from 1 to 9 are contained in v, false otherwise
 bool basic_search (const unsigned v[], unsigned n_elements);
 
 
