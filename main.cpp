@@ -77,11 +77,18 @@ bool search_key (const unsigned v[], unsigned n_elements, unsigned key)
 }
 
 
+bool basic_search (const unsigned v[], unsigned n_elements){
+    for(unsigned n = 1; n <= n_elements; ++n){ // search for the number n in the array v
+        bool nIsFound = false;
 
+        for(size_t i = n-1 ; i < n_elements && !nIsFound; ++i){
+            if (v[i] < n) return false; //consider if the value had already been found
+            if (v[i] == n) nIsFound = true;
+        }
 
-/*
- * YOUR CODE GOES HERE
- */
+    }
+    return true;
+}
 
 
 
