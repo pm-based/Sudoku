@@ -10,15 +10,16 @@ using std::endl;
 
 const size_t SIZE = 9;
 
+// returns 1 if all numbers from 1 to 9 are contained in v, 0 otherwise
+// TODO: implement
+bool basic_search (const unsigned v[], unsigned n_elements);
 
 
-
-/*
- * YOUR CODE GOES HERE
- */
-
-
-
+// they return 1 if all the rows, columns and subregions (respectively) of the Sudoku matrix comply with the rules, 0 otherwise
+// TODO: implement
+bool check_rows (const unsigned sudoku[][SIZE]);
+bool check_cols (const unsigned sudoku[][SIZE]);
+bool check_regions (const unsigned sudoku[][SIZE]);
 
 
 // Return:
