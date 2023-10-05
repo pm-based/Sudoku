@@ -163,11 +163,10 @@ bool check_regions (const unsigned sudoku[][SIZE]){
 
 int check_sudoku(const unsigned sudoku[][SIZE])
 {
-    cout << "To be implemented" << endl;
-    /*
-    * YOUR CODE GOES HERE
-    */
-    return 0;
+    if(!check_rows(sudoku)) return (-1);
+    if(!check_cols(sudoku)) return (-2);
+    if(!check_regions(sudoku)) return (-3);
+    return 1;
 }
 
 void generate_sudoku(unsigned sudoku[][SIZE])
