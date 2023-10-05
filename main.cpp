@@ -3,17 +3,16 @@
  */
 
 #include <iostream>
-#include <cmath>
+#include <cmath> //Used to compute the number rows and columns of regions: sqrt(SIZE)
 
 using std::cout;
 using std::cin;
 using std::endl;
 
-const size_t SIZE = 9;
+const size_t SIZE = 16; // support every SIZE = n^2; n integer.
 
-// returns true if all numbers from 1 to 9 are contained in v, false otherwise
+// returns true if all numbers from 1 to n_elements are contained in v, false otherwise
 bool basic_search (const unsigned * v[], unsigned n_elements);
-
 
 // they return 1 if all the rows, columns and subregions (respectively) of the Sudoku matrix comply with the rules, 0 otherwise
 bool check_rows (const unsigned sudoku[][SIZE]);
@@ -35,27 +34,28 @@ void generate_sudoku(unsigned sudoku[][SIZE]);
 int main()
 {
     // initialize a sudoku matrix
-    unsigned sudoku[SIZE][SIZE] = {
-            {1,2,3,4,5,6,7,8,9},
-            {2,3,4,5,6,7,8,9,1},
-            {3,4,5,6,7,8,9,1,2},
-            {4,5,6,7,8,9,1,2,3},
-            {5,6,7,8,9,1,2,3,4},
-            {6,7,8,9,1,2,3,4,5},
-            {7,8,9,1,2,3,4,5,6},
-            {8,9,1,2,3,4,5,6,7},
-            {9,1,2,3,4,5,6,7,8}
-    };
+//    unsigned sudoku[SIZE][SIZE] = {
+//            {1,2,3,4,5,6,7,8,9},
+//            {2,3,4,5,6,7,8,9,1},
+//            {3,4,5,6,7,8,9,1,2},
+//            {4,5,6,7,8,9,1,2,3},
+//            {5,6,7,8,9,1,2,3,4},
+//            {6,7,8,9,1,2,3,4,5},
+//            {7,8,9,1,2,3,4,5,6},
+//            {8,9,1,2,3,4,5,6,7},
+//            {9,1,2,3,4,5,6,7,8}
+//    };
 
     // check
-    int res = check_sudoku(sudoku);
-    cout << "check_sudoku returns: " <<  res << endl;
+//    int res = check_sudoku(sudoku);
+//    cout << "check_sudoku returns: " <<  res << endl;
 
     // initialize another sudoku matrix
     unsigned sudoku2[SIZE][SIZE];
     generate_sudoku(sudoku2);
 
     // check
+    int res;
     res = check_sudoku(sudoku2);
     cout << "check_sudoku returns: " <<  res << endl;
 
@@ -134,7 +134,7 @@ bool check_regions (const unsigned sudoku[][SIZE]){
     size_t nRowColRegions = 0; //Number of rows and colums of regions
     {
         double squareSIZE = std::sqrt((SIZE));
-        if (squareSIZE == floor(squareSIZE)) nRowColRegions = squareSIZE;
+        if (squareSIZE == floor(squareSIZE)) nRowColRegions = static_cast<size_t>(squareSIZE);
     }
 
     for(size_t regRowIndex = 0; regRowIndex < nRowColRegions; ++regRowIndex) {
@@ -168,19 +168,26 @@ int check_sudoku(const unsigned sudoku[][SIZE])
     return 1;
 }
 
+// Modified: Can generate a sudoku of size SIZE, s.t.: sqrt(SIZE) is an integer
 void generate_sudoku(unsigned sudoku[][SIZE])
 {
-    int x = 0;
-    for (size_t i=1; i<=3; ++i)
+    size_t nRowColRegions = 0; //Number of rows and colums of regions
     {
-        for (size_t j=1; j<=3; ++j)
+        double squareSIZE = std::sqrt((SIZE));
+        if (squareSIZE == floor(squareSIZE)) nRowColRegions = static_cast<size_t>(squareSIZE);
+    }
+
+    int x = 0;
+    for (size_t i=1; i<=nRowColRegions; ++i)
+    {
+        for (size_t j=1; j<=nRowColRegions; ++j)
         {
             for (size_t k=1; k<=SIZE; ++k)
             {
-                sudoku[3*(i-1)+j-1][k-1] = (x % SIZE) + 1;
+                sudoku[nRowColRegions*(i-1)+j-1][k-1] = (x % SIZE) + 1;
                 x++;
             }
-            x += 3;
+            x += static_cast<int>(nRowColRegions);
         }
         x++;
     }
