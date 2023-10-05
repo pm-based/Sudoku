@@ -3,6 +3,7 @@
  */
 
 #include <iostream>
+#include <cmath>
 
 using std::cout;
 using std::cin;
@@ -125,6 +126,37 @@ bool check_cols (const unsigned sudoku[][SIZE]){
 
         if (!basic_search(col,SIZE)) return false;
     }
+    return true;
+}
+
+bool check_regions (const unsigned sudoku[][SIZE]){
+
+    // check if sqrt of SIZE is integer
+    size_t nRowColRegions = 0; //Number of rows and colums of regions
+    {
+        double squareSIZE = std::sqrt((SIZE));
+        if (squareSIZE == floor(squareSIZE)) nRowColRegions = squareSIZE;
+    }
+
+    for(size_t regRowIndex = 0; regRowIndex < nRowColRegions; ++regRowIndex) {
+        for (size_t regColIndex = 0; regColIndex < nRowColRegions; ++regColIndex) {
+            size_t i = 0;
+            const unsigned *reg[SIZE] = {};
+
+            size_t startRow = nRowColRegions * regRowIndex;
+            size_t startCol =nRowColRegions * regColIndex;
+
+            for (size_t rowIndex = startRow; rowIndex < startRow+nRowColRegions; ++rowIndex) {
+                for (size_t colIndex = startCol; colIndex <  startCol+nRowColRegions; ++colIndex) {
+                    reg[i] = &sudoku[rowIndex][colIndex];
+                    ++i;
+                };
+            };
+
+            if (!basic_search(reg,SIZE)) return false;
+        }
+    }
+
     return true;
 }
 
