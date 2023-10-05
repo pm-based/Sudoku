@@ -16,7 +16,6 @@ bool basic_search (const unsigned * v[], unsigned n_elements);
 
 
 // they return 1 if all the rows, columns and subregions (respectively) of the Sudoku matrix comply with the rules, 0 otherwise
-// TODO: implement
 bool check_rows (const unsigned sudoku[][SIZE]);
 bool check_cols (const unsigned sudoku[][SIZE]);
 bool check_regions (const unsigned sudoku[][SIZE]);
@@ -104,14 +103,14 @@ bool check_rows (const unsigned sudoku[][SIZE]){
         const unsigned * row[SIZE] = {};
         for(size_t colIndex = 0; colIndex < SIZE; ++colIndex){
             row[colIndex] = &sudoku[rowIndex][colIndex];
-        };
+        }
         if (!basic_search(row,SIZE)) return false;
     }
     return true;
 }
 
 bool check_cols (const unsigned sudoku[][SIZE]){
-    for(size_t colIndex = 0; colIndex < SIZE; ++colIndex){      // for every columns
+    for(size_t colIndex = 0; colIndex < SIZE; ++colIndex){      // for every column
         const unsigned * col[SIZE] = {};                             // Arrey pointers.
         for(size_t rowIndex = 0; rowIndex < SIZE; ++rowIndex){
             col[rowIndex] = &sudoku[rowIndex][colIndex];
@@ -150,8 +149,8 @@ bool check_regions (const unsigned sudoku[][SIZE]){
                 for (size_t colIndex = startCol; colIndex <  startCol+nRowColRegions; ++colIndex) {
                     reg[i] = &sudoku[rowIndex][colIndex];
                     ++i;
-                };
-            };
+                }
+            }
 
             if (!basic_search(reg,SIZE)) return false;
         }
