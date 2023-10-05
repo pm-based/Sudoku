@@ -4,12 +4,13 @@
 
 #include <iostream>
 #include <cmath> //Used to compute the number rows and columns of regions: sqrt(SIZE)
+#include <chrono>
 
 using std::cout;
 using std::cin;
 using std::endl;
 
-const size_t SIZE = 16; // support every SIZE = n^2; n integer.
+const size_t SIZE = 9; // support every SIZE = n^2; n integer.
 
 // returns true if all numbers from 1 to n_elements are contained in v, false otherwise
 bool basic_search (const unsigned * v[], unsigned n_elements);
@@ -34,31 +35,29 @@ void generate_sudoku(unsigned sudoku[][SIZE]);
 int main()
 {
     // initialize a sudoku matrix
-//    unsigned sudoku[SIZE][SIZE] = {
-//            {1,2,3,4,5,6,7,8,9},
-//            {2,3,4,5,6,7,8,9,1},
-//            {3,4,5,6,7,8,9,1,2},
-//            {4,5,6,7,8,9,1,2,3},
-//            {5,6,7,8,9,1,2,3,4},
-//            {6,7,8,9,1,2,3,4,5},
-//            {7,8,9,1,2,3,4,5,6},
-//            {8,9,1,2,3,4,5,6,7},
-//            {9,1,2,3,4,5,6,7,8}
-//    };
+    unsigned sudoku[SIZE][SIZE] = {
+            {1,2,3,4,5,6,7,8,9},
+            {2,3,4,5,6,7,8,9,1},
+            {3,4,5,6,7,8,9,1,2},
+            {4,5,6,7,8,9,1,2,3},
+            {5,6,7,8,9,1,2,3,4},
+            {6,7,8,9,1,2,3,4,5},
+            {7,8,9,1,2,3,4,5,6},
+            {8,9,1,2,3,4,5,6,7},
+            {9,1,2,3,4,5,6,7,8}
+    };
 
     // check
-//    int res = check_sudoku(sudoku);
-//    cout << "check_sudoku returns: " <<  res << endl;
+    int res = check_sudoku(sudoku);
+    cout << "check_sudoku returns: " <<  res << endl;
 
     // initialize another sudoku matrix
     unsigned sudoku2[SIZE][SIZE];
     generate_sudoku(sudoku2);
 
     // check
-    int res;
     res = check_sudoku(sudoku2);
     cout << "check_sudoku returns: " <<  res << endl;
-
 
     return 0;
 }
@@ -162,10 +161,20 @@ bool check_regions (const unsigned sudoku[][SIZE]){
 
 int check_sudoku(const unsigned sudoku[][SIZE])
 {
-    if(!check_rows(sudoku)) return (-1);
-    if(!check_cols(sudoku)) return (-2);
-    if(!check_regions(sudoku)) return (-3);
-    return 1;
+    int res = 1;
+    // Start chronometer
+    auto start = std::chrono::high_resolution_clock::now();
+
+    if(!check_rows(sudoku)) res = -1;
+    if(!check_cols(sudoku)) res = -2;
+    if(!check_regions(sudoku)) res = -3;
+
+    // Stop chronometer
+    auto stop = std::chrono::high_resolution_clock::now();
+    cout << "Time to check: " << duration_cast<std::chrono::microseconds>(stop - start).count()
+        << "µs" << endl;
+
+    return res;
 }
 
 // Modified: Can generate a sudoku of size SIZE, s.t.: sqrt(SIZE) is an integer
